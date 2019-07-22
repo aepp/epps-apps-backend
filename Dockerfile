@@ -11,12 +11,12 @@ ADD .yarn_cache /usr/local/share/.cache/yarn/v2/
 WORKDIR /usr/src/app
 
 ADD ./package.json ./yarn.* ./
-#RUN yarn install
+RUN yarn install --production
 
 ADD . .
 
 RUN chmod +x ./docker-cmd.sh
-#RUN yarn build
+#RUN yarn build:prod
 
 EXPOSE 3000
 #ENTRYPOINT ["sh", "-c"]
