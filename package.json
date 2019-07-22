@@ -9,7 +9,7 @@
     "build": "webpack --config config/webpack.$NODE_ENV.js",
     "build:dev": "webpack --config config/webpack.development.js",
     "build:prod": "webpack --config config/webpack.production.js",
-    "start": "node dist_server/server"
+    "start": "node dist_server/main"
   },
   "devDependencies": {
     "@types/express": "^4.17.0",
