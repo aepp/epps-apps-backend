@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 export default gql`
   type User {
@@ -12,7 +12,7 @@ export default gql`
 `;
 
 export interface User {
-  _id: string,
-  email: string,
-  username?: string
+  _id: string;
+  email: string;
+  username?: string;
 }

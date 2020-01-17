@@ -12,7 +12,6 @@ app.get('/*', (req: Request, res: Response) => {
 });
 app.listen(PORT, () => console.log(`App listening on port ${PORT}!`));
 
-
 // import {ApolloServer} from 'apollo-server';
 //
 // import resolvers from './graphql/modules/resolvers';
