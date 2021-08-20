@@ -15,7 +15,7 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-const allowList = ['http://localhost:3034', 'http://localhost', 'localhost'];
+const allowList = ['http://localhost:3034', 'http://localhost', 'localhost', 'https://epps-apps.com'];
 const corsOptionsDelegate = function(req: Request, callback: Function) {
   let corsOptions;
   const origin = req.header('Origin') || '';
@@ -30,7 +30,7 @@ const corsOptionsDelegate = function(req: Request, callback: Function) {
 
 // app.use(cors(corsOptionsDelegate));
 app.get(api.auth, cors(corsOptionsDelegate), (req: Request, res: Response) => {
-  console.log('Received an AUTH request');
+  console.log('log:', 'Received an AUTH request.');
   return res.json({msg: 'Received an AUTH request!'});
 });
 
