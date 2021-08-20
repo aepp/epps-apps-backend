@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "@types/node": "^12.6.8",
-    "apollo-server": "^2.7.0",
+    "apollo-server": "^2.14.2",
     "cors": "^2.8.5",
     "graphql": "^14.4.2"
   }
