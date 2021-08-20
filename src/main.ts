@@ -1,21 +1,42 @@
 import express, {Request, Response} from 'express';
+import cors from 'cors';
 import path from 'path';
 import fs from 'fs';
+import {api} from './api';
 
 // Create our express app using the port optionally specified
 const app = express();
 const PORT = process.env.PORT || 3000;
+if (process.env.ENV === 'production') {
+  app.use(express.static(fs.realpathSync('./build')));
 
-app.use(express.static(fs.realpathSync('./build')));
+  app.get('/*', (req: Request, res: Response) => {
+    res.sendFile(path.join(__dirname, './build', 'index.html'));
+  });
+}
 
-app.get('/api/*', (req: Request, res: Response) => {
-  return res.send('Received an API request');
+const allowList = ['http://localhost:3034', 'http://localhost', 'localhost'];
+const corsOptionsDelegate = function(req: Request, callback: Function) {
+  let corsOptions;
+  const origin = req.header('Origin') || '';
+
+  if (allowList.indexOf(origin) !== -1) {
+    corsOptions = {origin: true}; // reflect (enable) the requested origin in the CORS response
+  } else {
+    corsOptions = {origin: false}; // disable CORS for this request
+  }
+  callback(null, corsOptions); // callback expects two parameters: error and options
+};
+
+// app.use(cors(corsOptionsDelegate));
+app.get(api.auth, cors(corsOptionsDelegate), (req: Request, res: Response) => {
+  console.log('Received an AUTH request');
+  return res.json({msg: 'Received an AUTH request!'});
 });
 
-app.get('/*', (req: Request, res: Response) => {
-  res.sendFile(path.join(__dirname, './build', 'index.html'));
+app.listen(PORT, () => {
+  console.log(`App listening on port ${PORT}!`);
 });
-app.listen(PORT, () => console.log(`App listening on port ${PORT}!`));
 
 // import {ApolloServer} from 'apollo-server';
 //

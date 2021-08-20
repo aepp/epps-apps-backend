@@ -13,6 +13,13 @@
     "build:dev": "webpack --config config/webpack.development.js",
     "build:prod": "webpack --config config/webpack.production.js",
     "start": "node dist_server/main",
+    "dev": "nodemon dist_server/main",
+    "_docker:start": "docker compose -f docker-compose.yml -f ${DOCKER_COMPOSE_ENV_FILE} up -d",
+    "_docker:stop": "docker compose -f docker-compose.yml -f ${DOCKER_COMPOSE_ENV_FILE} down",
+    "_docker:restart": "docker compose -f docker-compose.yml -f ${DOCKER_COMPOSE_ENV_FILE} restart",
+    "dev:up": "DOCKER_COMPOSE_ENV_FILE=docker-compose.development.yml yarn _docker:start",
+    "dev:down": "DOCKER_COMPOSE_ENV_FILE=docker-compose.development.yml yarn _docker:stop",
+    "dev:restart": "DOCKER_COMPOSE_ENV_FILE=docker-compose.development.yml yarn _docker:restart",
     "prettier": "prettier 'src/**/*.{js,ts}'",
     "p": "yarn prettier --write",
     "p:write": "yarn p",
@@ -25,6 +32,7 @@
     "@types/express": "^4.17.0",
     "@types/webpack-env": "^1.14.0",
     "clean-webpack-plugin": "^3.0.0",
+    "nodemon": "^2.0.12",
     "prettier": "^1.19.1",
     "ts-loader": "^6.0.4",
     "typescript": "^3.5.3",
@@ -36,6 +44,7 @@
   "dependencies": {
     "@types/node": "^12.6.8",
     "apollo-server": "^2.7.0",
+    "cors": "^2.8.5",
     "graphql": "^14.4.2"
   }
 }

@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  node:
+    build:
+      dockerfile: Dockerfile.development
+    environment:
+      VIRTUAL_HOST: 'epps-apps-backend.test'
+      ENV: 'development'
+    volumes:
+    - ./src:/usr/src/app/src
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+networks:
+  default:
+    external: true
+    name: 'local_network'

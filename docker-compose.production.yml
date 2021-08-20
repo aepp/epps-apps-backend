@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  node:
+    build:
+      dockerfile: Dockerfile
+    environment:
+      ENV: 'production'
+      VIRTUAL_HOST: 'epps-apps.com'
+      LETSENCRYPT_HOST: 'epps-apps.com'
+      LETSENCRYPT_EMAIL: 'info@epps-apps.com'
+    volumes:
+      - ./scripts/:/usr/src/app/scripts/
+
+networks:
+  default:
+    external: true
+    name: webproxy

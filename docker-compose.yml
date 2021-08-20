@@ -2,24 +2,7 @@ version: '3'
 
 services:
   node:
-    container_name: ${COMPOSE_PROJECT_NAME}
     build:
       context: .
-      dockerfile: Dockerfile
+    container_name: epps_apps
     tty: true
-    volumes:
-      - ./scripts/:/usr/src/app/scripts/
-    environment:
-      VIRTUAL_HOST: ${DOMAINS}
-      LETSENCRYPT_HOST: ${DOMAINS}
-      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
-#    expose:
-#      - 3000
-#      - 4000
-#    ports:
-#      - 4000:4000
-
-networks:
-  default:
-    external:
-      name: ${NETWORK}
