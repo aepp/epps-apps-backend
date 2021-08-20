@@ -7,6 +7,11 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.static(fs.realpathSync('./build')));
+
+app.get('/api/*', (req: Request, res: Response) => {
+  return res.send('Received an API request');
+});
+
 app.get('/*', (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, './build', 'index.html'));
 });
