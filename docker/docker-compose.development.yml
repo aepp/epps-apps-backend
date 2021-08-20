@@ -3,12 +3,13 @@ version: '3'
 services:
   node:
     build:
-      dockerfile: Dockerfile.development
+      context: ../
+      dockerfile: docker/Dockerfile.development
     environment:
       VIRTUAL_HOST: 'epps-apps-backend.test'
-      ENV: 'development'
+      NODE_ENV: 'development'
     volumes:
-    - ./src:/usr/src/app/src
+    - ../src:/usr/src/app/src
     extra_hosts:
       - "host.docker.internal:host-gateway"
 

@@ -6,8 +6,6 @@ RUN apt-get update && apt-get install -y curl apt-transport-https && \
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
     apt-get update && apt-get install -y yarn
 
-ADD .yarn_cache /usr/local/share/.cache/yarn/v2/
-
 WORKDIR /usr/src/app
 
 ADD ./package.json ./yarn.* ./
@@ -15,12 +13,8 @@ RUN yarn install
 
 ADD . .
 
-RUN chmod +x ./docker-cmd.sh
-#RUN yarn build:prod
+RUN chmod +x ./docker/docker-cmd-development.sh
 
 EXPOSE 3000
-#ENTRYPOINT ["sh", "-c"]
-#CMD ["yarn", "serve:prod"]
-#CMD ["yarn", "build:dev"]
-ENTRYPOINT ["/bin/bash", "/usr/src/app/docker-cmd-development.sh"]
+ENTRYPOINT ["/bin/bash", "/usr/src/app/docker/docker-cmd-development.sh"]
 

@@ -15,11 +15,11 @@ RUN yarn install --production
 
 ADD . .
 
-RUN chmod +x ./docker-cmd.sh
+RUN chmod +x ./docker/docker-cmd.sh
 #RUN yarn build:prod
 
 EXPOSE 3000
 #ENTRYPOINT ["sh", "-c"]
 #CMD ["yarn", "serve:prod"]
-CMD ["/bin/bash", "/usr/src/app/docker-cmd.sh"]
+CMD ["/bin/bash", "/usr/src/app/docker/docker-cmd-production.sh"]
 

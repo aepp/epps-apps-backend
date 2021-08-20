@@ -7,7 +7,7 @@ import {api} from './api';
 // Create our express app using the port optionally specified
 const app = express();
 const PORT = process.env.PORT || 3000;
-if (process.env.ENV === 'production') {
+if (process.env.NODE_ENV === 'production') {
   app.use(express.static(fs.realpathSync('./build')));
 
   app.get('/*', (req: Request, res: Response) => {
