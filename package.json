@@ -9,9 +9,9 @@
     "node": ">=10.15.0"
   },
   "scripts": {
-    "build": "webpack --config config/webpack/webpack.$NODE_ENV.js",
-    "build:dev": "webpack --config config/webpack/webpack.development.js",
-    "build:prod": "webpack --config config/webpack/webpack.production.js",
+    "build": "webpack --config config/webpack.$NODE_ENV.js",
+    "build:dev": "webpack --config config/webpack.development.js",
+    "build:prod": "webpack --config config/webpack.production.js",
     "start": "node dist_server/main",
     "dev": "nodemon dist_server/main",
     "_docker:start": "docker compose -f docker/docker-compose.yml -f ${DOCKER_COMPOSE_ENV_FILE} up -d",
