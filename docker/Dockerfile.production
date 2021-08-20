@@ -15,7 +15,7 @@ RUN yarn install --production
 
 ADD . .
 
-RUN chmod +x ./docker/docker-cmd.sh
+RUN chmod +x ./docker/docker-cmd-production.sh
 #RUN yarn build:prod
 
 EXPOSE 3000
