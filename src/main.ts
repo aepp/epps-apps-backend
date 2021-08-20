@@ -7,13 +7,6 @@ import {api} from './api';
 // Create our express app using the port optionally specified
 const app = express();
 const PORT = process.env.PORT || 3000;
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(fs.realpathSync('./build')));
-
-  app.get('/*', (req: Request, res: Response) => {
-    res.sendFile(path.join(__dirname, './build', 'index.html'));
-  });
-}
 
 const allowList = ['http://localhost:3034', 'http://localhost', 'localhost', 'https://epps-apps.com'];
 const corsOptionsDelegate = function(req: Request, callback: Function) {
@@ -33,6 +26,14 @@ app.get(api.auth, cors(corsOptionsDelegate), (req: Request, res: Response) => {
   console.log('log:', 'Received an AUTH request.');
   return res.json({msg: 'Received an AUTH request!'});
 });
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(fs.realpathSync('./build')));
+
+  app.get('/*', (req: Request, res: Response) => {
+    res.sendFile(path.join(__dirname, './build', 'index.html'));
+  });
+}
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}!`);
