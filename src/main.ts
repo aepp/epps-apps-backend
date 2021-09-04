@@ -1,30 +1,65 @@
-import express, {Request, Response} from 'express';
+import express, {NextFunction, Request, Response} from 'express';
 import cors from 'cors';
 import path from 'path';
+import cookieSession from 'cookie-session';
+import cookieParser from 'cookie-parser';
 import fs from 'fs';
+import routes from './routes';
 import {api} from './api';
+import setup from './setup';
+import {Globals} from './globals';
 
 // Create our express app using the port optionally specified
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.EXPRESS_PORT || 3000;
 
-const allowList = ['http://localhost:3034', 'http://localhost', 'localhost', 'https://epps-apps.com'];
-const corsOptionsDelegate = function(req: Request, callback: Function) {
-  let corsOptions;
-  const origin = req.header('Origin') || '';
+app.use(
+  cors({
+    origin: Globals.clientHomePageUrl, // allow to server to accept request from different origin
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true // allow session cookie from browser to pass through
+  })
+);
 
-  if (allowList.indexOf(origin) !== -1) {
-    corsOptions = {origin: true}; // reflect (enable) the requested origin in the CORS response
+app.use(
+  cookieSession({
+    name: 'session',
+    keys: ['mYsECreT'],
+    maxAge: 24 * 60 * 60 * 100
+  })
+);
+
+// parse cookies
+app.use(cookieParser());
+
+app.use(setup.passport.initialize());
+app.use(setup.passport.session());
+
+app.use((req: Request, res, next) => {
+  req.context = {};
+  next();
+});
+
+app.use(api.auth.root, routes.auth);
+
+const authCheck = (req: Request, res: Response, next: NextFunction) => {
+  if (!req.user) {
+    res.status(401).json({
+      authenticated: false,
+      message: 'user has not been authenticated'
+    });
   } else {
-    corsOptions = {origin: false}; // disable CORS for this request
+    next();
   }
-  callback(null, corsOptions); // callback expects two parameters: error and options
 };
 
-// app.use(cors(corsOptionsDelegate));
-app.get(api.auth, cors(corsOptionsDelegate), (req: Request, res: Response) => {
-  console.log('log:', 'Received an AUTH request.');
-  return res.json({msg: 'Received an AUTH request!'});
+app.get('/', authCheck, (req, res) => {
+  res.status(200).json({
+    authenticated: true,
+    message: 'user successfully authenticated',
+    user: req.user,
+    cookies: req.cookies
+  });
 });
 
 if (process.env.NODE_ENV === 'production') {

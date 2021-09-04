@@ -1,5 +1,15 @@
-const context = '/api';
+// const context = '/api';
 
 export const api = {
-  auth: `${context}/auth`
+  auth: {
+    // root: `${context}/auth`,
+    root: '/auth',
+    twitter: {
+      authenticate: '/',
+      loginSuccess: '/login/success',
+      loginFailed: '/login/failed',
+      logout: '/logout',
+      redirect: '/redirect'
+    }
+  }
 };
