@@ -1,19 +1,56 @@
-version: '3'
+version: '3.9'
+
+#x-env-file:
+#  &default-env-file
+#  env_file:
+#    - .env.development
 
 services:
-  node:
-    build:
-      context: ../
-      dockerfile: docker/Dockerfile.development
-    environment:
-      VIRTUAL_HOST: 'epps-apps-backend.test'
-      NODE_ENV: 'development'
-    volumes:
-    - ../src:/usr/src/app/src
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+#  node:
+#    tty: true
+#    depends_on:
+#      - mongo
+#    container_name: ${EXPRESS_CONTAINER_NAME}
+#    <<: *default-env-file
+#    build:
+#      context: ..
+#      args:
+#        DEPLOY_PATH: ${DEPLOY_PATH}
+#        EXPRESS_CONTAINER_NAME: ${EXPRESS_CONTAINER_NAME}
+#        EXPRESS_PORT: ${EXPRESS_PORT}
+#        MONGO_CONTAINER_NAME: ${MONGO_CONTAINER_NAME}
+#        MONGO_PORT: ${MONGO_PORT}
+#      dockerfile: docker/Dockerfile.development
+#    volumes:
+#      - ../src:${DEPLOY_PATH}/src
+#      - ../config:${DEPLOY_PATH}/config
+#      - ../node_modules:${DEPLOY_PATH}/node_modules
+#      - ../dist_server:${DEPLOY_PATH}/dist_server
+#      - ../package.json:${DEPLOY_PATH}/package.json
+#      - ../tsconfig.json:${DEPLOY_PATH}/tsconfig.json
+#      - ../graphql.schema.json:${DEPLOY_PATH}/graphql.schema.json
+#      - ../.graphqlconfig:${DEPLOY_PATH}/.graphqlconfig
+#    environment:
+#      VIRTUAL_HOST: ${EXPRESS_VIRTUAL_HOST}
+#    extra_hosts:
+#      - 'host.docker.internal:host-gateway'
 
-networks:
-  default:
-    external: true
-    name: 'local_network'
+  mongo:
+#    <<: *default-env-file
+    env_file:
+      - .env.development
+    container_name: ${MONGO_CONTAINER_NAME}
+    image: mongo
+    volumes:
+      - ./mongo:/data/db
+    ports:
+#      - "${MONGO_PORT}:${MONGO_PORT}"
+      - "27017:27017"
+    expose:
+      - "27017"
+
+
+#networks:
+#  default:
+#    external: true
+#    name: ${NETWORK}

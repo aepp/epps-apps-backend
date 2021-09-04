@@ -1,8 +1,7 @@
 #!/bin/bash
 set -e
 
-nohup yarn build:dev </dev/null &
-
-yarn dev
+#nohup yarn build:dev --watch </dev/null &
+yarn dev:docker
 
 exec "$@"

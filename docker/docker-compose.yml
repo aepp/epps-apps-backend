@@ -1,8 +1,0 @@
-version: '3'
-
-services:
-  node:
-    build:
-      context: .
-    container_name: epps_apps
-    tty: true

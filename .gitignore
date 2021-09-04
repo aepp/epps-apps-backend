@@ -2,3 +2,4 @@ dist/
 dist_server/
 build
 .yarn_cache
+docker/mongo/

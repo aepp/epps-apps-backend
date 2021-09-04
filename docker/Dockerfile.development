@@ -8,13 +8,14 @@ RUN apt-get update && apt-get install -y curl apt-transport-https && \
 
 WORKDIR /usr/src/app
 
-ADD ./package.json ./yarn.* ./
-RUN yarn install
+COPY package.json yarn.* tsconfig.json .graphqlconfig graphql.schema.json ./
+COPY src ./src
+COPY config ./config
+COPY docker ./docker
 
-ADD . .
+RUN yarn install
+RUN yarn build:dev
 
 RUN chmod +x ./docker/docker-cmd-development.sh
-
 EXPOSE 3000
-ENTRYPOINT ["/bin/bash", "/usr/src/app/docker/docker-cmd-development.sh"]
-
+ENTRYPOINT [ "sh", "-c", "docker/docker-cmd-development.sh" ]
