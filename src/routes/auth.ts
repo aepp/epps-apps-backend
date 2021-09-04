@@ -33,8 +33,8 @@ router.get(api.auth.twitter.loginFailed, (req: Request, res: Response) => {
 });
 
 // When logout, redirect to client
-router.get(api.auth.twitter.logout, (req: Request, res: Response) => {
-  req.logout();
+router.get(api.auth.twitter.logout, async (req: Request, res: Response) => {
+  await req.logout();
   res.json({
     success: true,
     message: 'user has been successfully logged out',
@@ -50,23 +50,10 @@ router.get(api.auth.twitter.authenticate, [
     if (req.session && returnTo) {
       req.session.returnTo = decodeURIComponent(returnTo);
     }
-    // const state = returnTo
-    //   ? Buffer.from(
-    //       JSON.stringify({returnTo: encodeURIComponent(returnTo)})
-    //     ).toString('base64')
-    //   : undefined;
     const authenticator = passport.authenticate('twitter', {
       scope: []
-      // state
     });
     authenticator(req, res, next);
-    //
-    // if (req.session) {
-    //   req.session.returnTo = req.query.returnTo;
-    // }
-    // console.log('authenticate req', req);
-    // console.log('authenticate res', res);
-    // next();
   }
   // passport.authenticate('twitter')
 ]);
@@ -83,26 +70,14 @@ router.get(
       if (req.session) {
         returnTo = req.session.returnTo;
       }
-      // const {returnTo} = JSON.parse(Buffer.from(state, 'base64').toString());
       if (typeof returnTo === 'string' && returnTo.startsWith('/')) {
-        return res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}${returnTo}`);
+        return res.redirect(`${process.env.CLIENT_HOME_PAGE_URL}/#${returnTo}`);
       }
     } catch (error) {
       console.error(error);
     }
     res.redirect(Globals.clientHomePageUrl);
   }
-  //   [
-  //   (req: Request, res: Response, next: NextFunction) => {
-  //     console.log('redirect req', req);
-  //     console.log('redirect res', res);
-  //     next();
-  //   },
-  //   passport.authenticate('twitter', {
-  //     successRedirect: process.env.CLIENT_HOME_PAGE_URL,
-  //     failureRedirect: `${api.auth.root}${api.auth.twitter.loginFailed}`
-  //   })
-  // ]
 );
 
 export default router;
