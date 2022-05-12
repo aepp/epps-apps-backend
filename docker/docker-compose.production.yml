@@ -11,8 +11,7 @@ services:
       LETSENCRYPT_HOST: 'epps-apps.com'
       LETSENCRYPT_EMAIL: 'info@epps-apps.com'
     volumes:
-      - ./scripts/:/usr/src/app/scripts/
-      - ./build/:/usr/src/app/build/
+      - ../build/:/usr/src/app/build/
 
 networks:
   default:

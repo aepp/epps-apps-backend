@@ -4,6 +4,29 @@ import path from 'path';
 import fs from 'fs';
 import {api} from './api';
 
+/** ########## BEGIN: animation-tool ########## **/
+// import express from 'express';
+// import fs from 'fs';
+//
+// // Create our express app using the port optionally specified
+// const app = express();
+// const PORT = process.env.PORT || 3000;
+//
+// app.use(
+//   '/integrations-demo/build/dist',
+//   express.static(fs.realpathSync('./build/dist'))
+// );
+// app.use(
+//   '/integrations-demo',
+//   express.static(fs.realpathSync('./integrations-demo/visual-inspection-tool'))
+// );
+// app.use('/', express.static(fs.realpathSync('./build')));
+//
+// app.listen(PORT, () => {
+//   console.log(`App listening on port ${PORT}!`);
+// });
+/** ########## END: animation-tool ########## **/
+
 // Create our express app using the port optionally specified
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -31,7 +54,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static(fs.realpathSync('./build')));
 
   app.get('/*', (req: Request, res: Response) => {
-    res.sendFile(path.join(__dirname, './build', 'index.html'));
+    res.sendFile(path.join(fs.realpathSync('./build'), 'index.html'));
   });
 }
 
